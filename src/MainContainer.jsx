@@ -1,21 +1,19 @@
 import React, { useState } from 'react'
 import Toolbar from './Toolbar/Toolbar'
 import CanvasContainer from './CanvasContainer/CanvasContainer'
-import PaletteContainer from './PaletteContainer/PaletteContainer'
+import ToolWindowContainer from './ToolWindow/ToolWindowContainer'
 import Sidebar from './Sidebar/Sidebar'
 
+
 const MainContainer = () => {
-    const [paletteVisible, setPaletteVisible] = useState(true);
-    const [activeTile, setActiveTile] = useState('grey');
+    
+    const [activeTile, setActiveTile] = useState('');
     const [activeSidebar, setActiveSidebar] = useState('Palette');    
 
     return (
         <div style={{backgroundColor: '#cb671a', display: 'flex', flexDirection: 'column', bottom: '0px'}}>
 
-            <Toolbar 
-                paletteVisible={paletteVisible}
-                setPaletteVisible={setPaletteVisible}
-            />
+            <Toolbar/>
             
             <div style={{display: 'flex', flexGrow: '1'}}>
                 <Sidebar
@@ -23,10 +21,11 @@ const MainContainer = () => {
                     setActiveSidebar={setActiveSidebar}
                 
                 />
-                <PaletteContainer
-                    paletteVisible={paletteVisible}
+                <ToolWindowContainer
                     activeTile={activeTile}
                     setActiveTile={setActiveTile}
+                    activeSidebar={activeSidebar}
+                    setActiveSidebar={setActiveSidebar}
                    
                 />
                 <CanvasContainer activeTile={activeTile}/>
