@@ -17,14 +17,14 @@ function Sidebar({activeSidebar, setActiveSidebar}) {
             setActiveSidebar={setActiveSidebar}
         />
         <SidebarButton
-            id={'New Tile'}
-            IconComponent={FaCirclePlus}
+            id={'New Color'}
+            IconComponent={MdColorize}
             activeSidebar={activeSidebar}
             setActiveSidebar={setActiveSidebar}
         />
         <SidebarButton
-            id={'New Color'}
-            IconComponent={MdColorize}
+            id={'New Tile'}
+            IconComponent={FaCirclePlus}
             activeSidebar={activeSidebar}
             setActiveSidebar={setActiveSidebar}
         />
