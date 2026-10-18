@@ -2,8 +2,16 @@ import React, { useState, useEffect } from 'react'
 
 import TilePalette from './TilePalette';
 import NewColourPicker from './NewColourPicker';
+import SavedCanvas from './SavedCanvas';
 
-function ToolWindowContainer({activeTile, setActiveTile, activeSidebar, setActiveSidebar}) {
+function ToolWindowContainer({
+        activeTile, 
+        setActiveTile, 
+        activeSidebar, 
+        setActiveSidebar,
+        canvasMap,
+        setCanvasMap
+    }) {
     const [newTile, setNewTile] = useState(null)
     const [tiles, setTiles] = useState(() => new Set());
 
@@ -25,9 +33,10 @@ function ToolWindowContainer({activeTile, setActiveTile, activeSidebar, setActiv
                 return <TilePalette activeTile={activeTile} setActiveTile={setActiveTile} tiles={tiles}/>
             case 'New Color':
                 return <NewColourPicker setNewTile={setNewTile}/>
-
             case 'New Tile':
                 return <div/>
+            case 'Load':
+                return <SavedCanvas canvasMap={canvasMap}/>
         }
     }
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import TileBrush from '../TileBrush/TileBrush'
+import TileBrush from '../Thumbnails/TileBrush'
 import colorNameToHex from '@uiw/react-color-name';
 
 function TilePalette({activeTile, setActiveTile, tiles}) {

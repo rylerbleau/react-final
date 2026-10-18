@@ -3,6 +3,7 @@ import SidebarButton from './SidebarButton'
 import { FaPalette } from "react-icons/fa";
 import { FaCirclePlus } from "react-icons/fa6";
 import { MdColorize } from "react-icons/md";
+import { FaRegFolderOpen } from "react-icons/fa6";
 
 function Sidebar({activeSidebar, setActiveSidebar}) {
     
@@ -25,6 +26,12 @@ function Sidebar({activeSidebar, setActiveSidebar}) {
         <SidebarButton
             id={'New Tile'}
             IconComponent={FaCirclePlus}
+            activeSidebar={activeSidebar}
+            setActiveSidebar={setActiveSidebar}
+        />
+        <SidebarButton
+            id={'Load'}
+            IconComponent={FaRegFolderOpen }
             activeSidebar={activeSidebar}
             setActiveSidebar={setActiveSidebar}
         />
