@@ -18,7 +18,9 @@ function ToolWindowContainer({
     }) {
 
 
-    const [tiles, setTiles] = useState(() => new Set());
+    const [tiles, setTiles] = useState(() => 
+        new Set(['#FF0000', '#00FF00', '#0000FF'])
+    );
 
 
     

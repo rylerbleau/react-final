@@ -2,7 +2,7 @@ import { useState } from 'react'
 import SaveWindow from './SaveWindow';
 import ExportWindow from './ExportWindow';
 
-function SaveAndExportContainer({canvasMap, setCurCanvasName, saveTrigger, setSaveTrigger}) {
+function SaveAndExportContainer({canvasMap, setCurCanvasName, saveTrigger, setSaveTrigger, grid}) {
     const [activeTab, setActiveTab] = useState('save');
 
 
@@ -17,7 +17,7 @@ function SaveAndExportContainer({canvasMap, setCurCanvasName, saveTrigger, setSa
                     
                 />
             case 'export':
-                return <ExportWindow/>
+                return <ExportWindow grid={grid}/>
 
            
         }
@@ -27,7 +27,7 @@ function SaveAndExportContainer({canvasMap, setCurCanvasName, saveTrigger, setSa
     return (
         <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', flexGrow:'1'}} className='save-export-panel'>
         
-            SaveAndExportContainer
+            
 
             <div className="save-export-container">
                 <div className="save-export-tabs">

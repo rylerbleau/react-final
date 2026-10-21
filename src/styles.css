@@ -1,4 +1,6 @@
-
+body {
+    font-family: Arial, sans-serif;
+}
 
 .app{
     --bg: rgb(141, 177, 216);
@@ -31,6 +33,10 @@
     --button: rgb(81, 74, 175);
 
 
+}
+
+.main-container{
+    background-color: var(--bg);
 }
 
 .tile-brush{
@@ -115,7 +121,22 @@
 
 .tool-window-container{
     background-color: var(--panel);
+    color: var(--text);
+
 }
+
+
+
+.toolbar{
+    background-color: var(--bg);
+    color: var(--text);
+
+}
+
+.variable-text{
+    color: var(--text);
+}
+
 
 .save-export-tabs{
     display: flex;
@@ -124,7 +145,8 @@
     flex-grow: 1;
     margin: 0 auto;
     gap: 0;
-    background-color: var(--bg);
+    background-color: var(--button);
+    border-top-left-radius: 5px;
 }
 
 .save-export-tabs input[type="radio"] {
@@ -136,9 +158,9 @@
 .save-export-tabs label {
     padding: 10px 20px;
     cursor: pointer;
-    background-color: #222;
-    color: #aaa;
-    border: 1px solid #444;
+    background-color: var(--button);
+    color: var(--text);
+    border: 1px solid var(--border);
     border-bottom: none;
     transition: filter 0.2s ease-in-out;
     flex: 1;
@@ -147,14 +169,14 @@
 }
 
 .save-export-tabs input[type="radio"]:checked + label {
-    background-color: #444;
+    background-color: var(--active);
     color: #fff;
     border-bottom: 2px solid #66b3ff;
     margin-bottom: -2px;
 }
 
 .save-export-tabs label:hover {
-    background-color: #333;
+    background-color: var(--bg);
     color: #fff;
 }
 
@@ -173,7 +195,7 @@
     width: 100%;
     display: flex;
     justify-content: center;
-    background-color: rgb(101, 50, 168);
+    background-color: var(--panel);
     padding-top: 10px;
     padding-bottom: 10px;
 }
@@ -204,6 +226,9 @@
     outline: 4px solid var(--outline-active);
 }
 
+.canvas-thumbnail-container{
+    color: var(--text);
+}
 
 .theme-toggle {
     display: inline-flex;

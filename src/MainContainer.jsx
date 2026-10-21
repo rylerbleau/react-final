@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import Toolbar from './Toolbar/Toolbar'
 import CanvasContainer from './CanvasContainer/CanvasContainer'
 import ToolWindowContainer from './ToolWindow/ToolWindowContainer'
@@ -10,14 +10,21 @@ import { BIN_URL, BIN_RUD_KEY } from './data/jsonBinConfig'
 
 const MainContainer = () => {
     
-    const [activeTile, setActiveTile] = useState('');
+    const [activeTile, setActiveTile] = useState('blue');
     const [activeSidebar, setActiveSidebar] = useState('Palette');    
     const [curCanvasName, setCurCanvasName] = useState('');
     const [selectedCanvasName, setSelectedCanvasName] = useState('');
     const [canvasMap, setCanvasMap] = useState(new Map());
     const [saveTrigger, setSaveTrigger] = useState(0);          // TODO make this a callback
     const [loadTrigger, setLoadTrigger] = useState(0);
-    const curCanvas = useRef(null);
+
+
+    const GRID_SIZE = 32;
+
+    const [grid, setGrid] = useState(
+        Array(GRID_SIZE * GRID_SIZE).fill('grey')
+
+    );
 
 
 
@@ -67,7 +74,7 @@ const MainContainer = () => {
     // there should be a useEffect that triggers on 'canvas saved'
 
     return (
-        <div style={{backgroundColor: '#cb671a', display: 'flex', flexDirection: 'column', bottom: '0px'}}>
+        <div style={{ display: 'flex', flexDirection: 'column', bottom: '0px'}} className='main-container'>
 
             <Toolbar/>
             
@@ -91,20 +98,23 @@ const MainContainer = () => {
                 />
                 <CanvasContainer 
                     activeTile={activeTile}
-                    curCanvas={curCanvas}
                     curCanvasName={curCanvasName}
                     canvasMap={canvasMap}
                     setCanvasMap={setCanvasMap}
                     selectedCanvasName={selectedCanvasName}
                     saveTrigger={saveTrigger}
                     loadTrigger={loadTrigger}
+                    grid={grid}
+                    setGrid={setGrid}
                 />
                 <SaveAndExportContainer 
                    
                     canvasMap={canvasMap}   // needed to check for dupes before adding
+                    
                     setCurCanvasName={setCurCanvasName}
                     saveTrigger={saveTrigger}
                     setSaveTrigger={setSaveTrigger}
+                    grid={grid}
                 />
             </div>
             

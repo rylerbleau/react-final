@@ -1,14 +1,20 @@
-import { useState, useRef, useEffect } from 'react'
+import { useRef, useEffect } from 'react'
 import { BIN_URL, BIN_RUD_KEY } from '../data/jsonBinConfig';
 
-function CanvasContainer({activeTile, curCanvas, curCanvasName, canvasMap, selectedCanvasName, setCanvasMap, saveTrigger, loadTrigger}) {
-    const GRID_SIZE = 32;
+function CanvasContainer({
+        activeTile, 
+        curCanvasName, 
+        canvasMap, 
+        selectedCanvasName, 
+        setCanvasMap, 
+        saveTrigger, 
+        loadTrigger,
+        grid,
+        setGrid
+    }) {
       
     
-    const [grid, setGrid] = useState(
-        Array(GRID_SIZE * GRID_SIZE).fill('grey')
-
-    );
+    
   
     const isMouseDown = useRef(false); // not a rendering var, so useRef
     //const [activeTileID, setActiveTileID] = useState('grey')
@@ -82,22 +88,42 @@ function CanvasContainer({activeTile, curCanvas, curCanvasName, canvasMap, selec
         })
     }
 
+    function EraseTile(index){
+        setGrid((prevGrid) => {
+            
+
+            const newGrid = [...prevGrid];
+            newGrid[index] = 'grey';
+            return newGrid;
+        })
+    }
+
     
 
-    const handleTileMouseDown = (index) => {
-        UpdateTile(index);
-        isMouseDown.current = true;
-        console.log("mouseDown");
+    const handleTileMouseDown = (index, e) => {
+        if(e.button === 0){
+
+            UpdateTile(index, e.button);
+            isMouseDown.current = true;
+        }
+        else if(e.button === 2){
+            EraseTile(index);
+            isMouseDown.current = true;
+
+        }
     };
 
-    function handleTileMouseEnter(index){
-        if(isMouseDown.current) UpdateTile(index);
-        console.log("mouseEnter" + isMouseDown.current);
+    function handleTileMouseEnter(index, e){
+        if (!isMouseDown.current) return;
 
+        if (e.buttons === 1) {
+            UpdateTile(index); 
+        } else if (e.buttons === 2) {
+            EraseTile(index); 
+        }
     }
 
     function handleMouseUpGlobal(){
-        console.log("mouseUP")
         isMouseDown.current = false;
     }
 
@@ -108,7 +134,7 @@ function CanvasContainer({activeTile, curCanvas, curCanvasName, canvasMap, selec
 
       <div style={{
           display: 'grid',
-          gridTemplateColumns: `repeat(${GRID_SIZE}, minmax(0, 1fr))`, 
+          gridTemplateColumns: `repeat(${32}, minmax(0, 1fr))`, 
           gap: '0px',
           width: '100%',
           height: '100%',
@@ -126,12 +152,13 @@ function CanvasContainer({activeTile, curCanvas, curCanvasName, canvasMap, selec
               return <div
                       key={index}
                       className='tile'
-                      onMouseDown={() => {
-                          handleTileMouseDown(index);
+                      onMouseDown={(e) => {
+                          handleTileMouseDown(index, e);
                       }}
-                      onMouseEnter={() => {
-                          handleTileMouseEnter(index);
+                      onMouseEnter={(e) => {
+                          handleTileMouseEnter(index, e);
                       }}
+                      onContextMenu={(e) => e.preventDefault()}
                       style={{
                           backgroundColor: tileKey, 
                           

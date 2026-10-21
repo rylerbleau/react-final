@@ -28,7 +28,7 @@ function SaveWindow({canvasMap, setCurCanvasName, saveTrigger, setSaveTrigger}) 
         setCurCanvasName(curName.current);
         nameInput.current.value = "";
         NameChangeHandler("");
-        setSaveTrigger(prev => prev + 1);
+        setSaveTrigger(saveTrigger + 1);
      
 
     }
@@ -39,10 +39,16 @@ function SaveWindow({canvasMap, setCurCanvasName, saveTrigger, setSaveTrigger}) 
                 ref={nameInput}
                 type="text"
                 id="nameInput"
+                placeholder='Name...'
                 onChange={(e) => NameChangeHandler(e.target.value)}
                 style={{ height: '25px', fontSize: '20px' }}
             />
-            <button disabled={!buttonEnabled} style={{width: '150px'}} onClick={SaveButtonHandler}>
+            <button 
+                disabled={!buttonEnabled} 
+                style={{width: '150px'}} 
+                onClick={SaveButtonHandler}
+                className='load-delete-buttons'
+            >
                 {buttonText}
             </button>
         </div>

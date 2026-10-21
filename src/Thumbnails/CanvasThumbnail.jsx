@@ -31,7 +31,7 @@ function CanvasThumbnail({name, colours, selectedCanvasName, SelectCanvasHandler
 
 
     return (
-        <div>
+        <div className='canvas-thumbnail-container'>
             <canvas
                 ref={canvasRef}
                 style={{

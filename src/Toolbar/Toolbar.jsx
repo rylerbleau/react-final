@@ -1,23 +1,14 @@
-//import React, { useState } from 'react'
 import ThemeToggle from '../ToolbarItems/ThemeToggle';
-import ToolbarItem from '../ToolbarItems/ToolbarItem'
 
-function Toolbar({paletteVisible, setPaletteVisible}) {
+function Toolbar() {
 
-    function ToggleCanvasButtonHandler(){
-        console.log("pressed button");
-        setPaletteVisible(!paletteVisible);
-    }
-    
+
      
     return (
         <>
-            <div style={{display: 'flex', alignItems:'center', gap: '20px', height:'40px', backgroundColor:'#29cf8c'}}>
-                <button className='toolbar-button' onClick={ToggleCanvasButtonHandler}>Toggle</button>
-                <ToolbarItem name="Option 1"></ToolbarItem>
-                <ToolbarItem name='Option 2'></ToolbarItem>
-                <ToolbarItem name='Option 3'></ToolbarItem>
-                <ToolbarItem name='Option 4'></ToolbarItem>
+            <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', height:'40px', marginLeft: '10px'}}className='toolbar'>
+                Pixel Art and Tilemap Draw Tool
+                
                 <ThemeToggle />
 
             </div>

@@ -5,8 +5,12 @@ import { BIN_RUD_KEY, BIN_URL } from '../data/jsonBinConfig';
 
 function SavedCanvas({canvasMap, setCanvasMap, selectedCanvasName, setSelectedCanvasName, loadTrigger, setLoadTrigger}) {
     const [buttonsEnabled, setButtonsEnabled] = useState(false);
+    const [filter, setFilter] = useState('');
 
-    
+    const filteredCanvases = [...canvasMap.entries()].filter(
+        ([name]) =>
+            name.toLowerCase().includes(filter.toLowerCase())
+    );
 
     function SelectCanvasHandler(name){
         setSelectedCanvasName(name);
@@ -55,6 +59,7 @@ function SavedCanvas({canvasMap, setCanvasMap, selectedCanvasName, setSelectedCa
         updated.delete(selectedCanvasName);   
         setCanvasMap(updated);
         UpdateCanvasData(updated);
+        setSelectedCanvasName('');
     }
 
 
@@ -63,48 +68,63 @@ function SavedCanvas({canvasMap, setCanvasMap, selectedCanvasName, setSelectedCa
     }
 
     return (
-        <div style={{display: 'flex', flexDirection: 'column', justifyContent:'space-between', width: '100%', height: '100%'}}>
-            <div style={{
-                display: 'flex', 
-                flexWrap: 'wrap', 
-                flexDirection: 'row', 
-                alignContent: 'stretch',
-                gap: '20px', 
-                overflowY: 'auto',  
-                paddingLeft: '4px',
-                paddingTop: '4px'
-                 
-            }}>
-                {[...canvasMap].map(([name, colours]) => (
-                    <CanvasThumbnail 
+        <div style={{display: 'flex', flexDirection: 'column', height: '100%'}}>
+            <input 
+                style={{maxWidth: '95%', borderRadius: '4px', backgroundColor: 'white', marginBottom: '8px'}}
+                placeholder='Search...'
+                value={filter}
+                onChange={(e) => setFilter(e.target.value)}
+            >
+
+                </input>
+
+            <div style={{display: 'flex', flexDirection: 'column', justifyContent:'space-between', flex: '1'}}>
+                
+                <div style={{
+                    display: 'flex', 
+                    flexWrap: 'wrap', 
+                    flexDirection: 'row', 
+                    alignContent: 'stretch',
+                    gap: '20px', 
+                    overflowY: 'auto', 
+                    maxHeight: '750px', 
+                    paddingLeft: '4px',
+                    paddingTop: '4px',
+                    scrollbarWidth: 'none', // Firefox
+                    msOverflowStyle: 'none' // Older IE/Edge
+                    
+                }}>
+                    {[...filteredCanvases].map(([name, colours]) => (
+                        <CanvasThumbnail 
                         key={name}
                         name={name}
                         colours={colours}  
                         selectedCanvasName={selectedCanvasName}
                         SelectCanvasHandler={SelectCanvasHandler}                 
-                    />               
-                ))}
+                        />               
+                    ))}
+                </div>
+                <div style={{display: 'flex', justifyContent: 'space-around'}}>
+                    <button 
+                        disabled={!buttonsEnabled}
+                        onClick={LoadButtonHandler}
+                        className='load-delete-buttons'
+                        >
+                        Load
+                    </button>
+                        
+                    <button 
+                        disabled={!buttonsEnabled} 
+                        onClick={DeleteButtonHandler}
+                        className='load-delete-buttons'
+                        >
+                        Delete
+                    </button>
+                </div>
+                
             </div>
-            <div style={{display: 'flex', justifyContent: 'space-around'}}>
-                <button 
-                    disabled={!buttonsEnabled}
-                    onClick={LoadButtonHandler}
-                    className='load-delete-buttons'
-                >
-                    Load
-                </button>
-                    
-                <button 
-                    disabled={!buttonsEnabled} 
-                    onClick={DeleteButtonHandler}
-                    className='load-delete-buttons'
-                >
-                    Delete
-                </button>
-            </div>
-            
-        </div>
         
+        </div>
         
     )
 }
