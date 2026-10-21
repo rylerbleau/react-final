@@ -1,9 +1,11 @@
-import React, { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Toolbar from './Toolbar/Toolbar'
 import CanvasContainer from './CanvasContainer/CanvasContainer'
 import ToolWindowContainer from './ToolWindow/ToolWindowContainer'
 import Sidebar from './Sidebar/Sidebar'
 import SaveAndExportContainer from './SaveAndExport/SaveAndExportContainer'
+import { BIN_URL, BIN_RUD_KEY } from './data/jsonBinConfig'
+
 
 
 const MainContainer = () => {
@@ -11,20 +13,52 @@ const MainContainer = () => {
     const [activeTile, setActiveTile] = useState('');
     const [activeSidebar, setActiveSidebar] = useState('Palette');    
     const [curCanvasName, setCurCanvasName] = useState('');
-    const [canvasMap, setCanvasMap] = useState(new Map())
+    const [selectedCanvasName, setSelectedCanvasName] = useState('');
+    const [canvasMap, setCanvasMap] = useState(new Map());
+    const [saveTrigger, setSaveTrigger] = useState(0);          // TODO make this a callback
+    const [loadTrigger, setLoadTrigger] = useState(0);
     const curCanvas = useRef(null);
 
-    useEffect(() => {
-        if(curCanvasName === '') return;
-        // 
 
-    }, [curCanvasName]);
-   
-    useEffect(() => {
-        if(curCanvas === null) return;
 
-    }, [curCanvas]);
+    
 
+    useEffect(() => {                                       // Initial Get
+        const FetchCanvasData = async function() {
+            try{
+                const binUrl = BIN_URL;
+
+                const response = await fetch(binUrl, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                
+                        'X-Access-Key': BIN_RUD_KEY
+                    }
+                });
+
+                const data = await response.json();
+                console.log("Response status:", response.status);
+                console.log("Response data:", data);
+
+
+                setCanvasMap(new Map(Object.entries(data.record.canvases)));
+            }
+            catch (error) {
+                console.error('Error fetching canvas data:', error);
+            }
+            
+        }
+
+        FetchCanvasData();
+
+    }, []);
+
+    useEffect(() =>{
+
+
+
+    }, [canvasMap]);
 
     // user should be able to save canvas. when saved, generate SVG for thumbnail? JSON object
     // canvasName: { colours[#AA1100, etc...], tiles[0,1,2,1 etc...] }
@@ -47,9 +81,12 @@ const MainContainer = () => {
                     activeTile={activeTile}
                     setActiveTile={setActiveTile}
                     activeSidebar={activeSidebar}
-                    setActiveSidebar={setActiveSidebar}
                     canvasMap={canvasMap}
                     setCanvasMap={setCanvasMap}
+                    selectedCanvasName={selectedCanvasName}
+                    setSelectedCanvasName={setSelectedCanvasName}
+                    loadTrigger={loadTrigger}
+                    setLoadTrigger={setLoadTrigger}
                    
                 />
                 <CanvasContainer 
@@ -58,11 +95,16 @@ const MainContainer = () => {
                     curCanvasName={curCanvasName}
                     canvasMap={canvasMap}
                     setCanvasMap={setCanvasMap}
+                    selectedCanvasName={selectedCanvasName}
+                    saveTrigger={saveTrigger}
+                    loadTrigger={loadTrigger}
                 />
                 <SaveAndExportContainer 
-                    curCanvas={curCanvas}
+                   
                     canvasMap={canvasMap}   // needed to check for dupes before adding
                     setCurCanvasName={setCurCanvasName}
+                    saveTrigger={saveTrigger}
+                    setSaveTrigger={setSaveTrigger}
                 />
             </div>
             

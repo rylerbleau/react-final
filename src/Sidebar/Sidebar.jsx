@@ -1,4 +1,3 @@
-import React from 'react'
 import SidebarButton from './SidebarButton'
 import { FaPalette } from "react-icons/fa";
 import { FaCirclePlus } from "react-icons/fa6";

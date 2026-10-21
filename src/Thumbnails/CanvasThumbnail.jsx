@@ -1,8 +1,8 @@
-import React, { useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 
-function CanvasThumbnail({name, colours}) {
+function CanvasThumbnail({name, colours, selectedCanvasName, SelectCanvasHandler}) {
     const canvasRef = useRef(null);
-    const size = 40;
+    const size = 72;
 
     useEffect(() => {
         const canvas = canvasRef.current;
@@ -29,16 +29,30 @@ function CanvasThumbnail({name, colours}) {
     }, [colours])
 
 
+
     return (
-        <canvas
-            ref={canvasRef}
-            style={{
-                width: size,
-                height: size,
-                imageRendering: "pixelated",
-                display: "block"
-            }}
-        />
+        <div>
+            <canvas
+                ref={canvasRef}
+                style={{
+                    width: size,
+                    height: size,
+                    imageRendering: "pixelated",
+                    display: "block"
+                }}
+                className={`canvas-thumbnail ${selectedCanvasName === name ? 'active' : ''}`}
+                onMouseDown={() => SelectCanvasHandler(name)}
+            />
+            <div 
+                style={{display: 'flex', justifyContent: 'center'}}
+                
+            >
+                {name}
+            </div>
+            
+            
+
+        </div>
     )
 }
 

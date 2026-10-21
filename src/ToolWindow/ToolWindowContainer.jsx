@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import  { useState } from 'react'
 
 import TilePalette from './TilePalette';
 import NewColourPicker from './NewColourPicker';
@@ -8,23 +8,30 @@ function ToolWindowContainer({
         activeTile, 
         setActiveTile, 
         activeSidebar, 
-        setActiveSidebar,
         canvasMap,
-        setCanvasMap
+        setCanvasMap,
+        selectedCanvasName,
+        setSelectedCanvasName,
+        loadTrigger,
+        setLoadTrigger,
+        
     }) {
-    const [newTile, setNewTile] = useState(null)
+
+
     const [tiles, setTiles] = useState(() => new Set());
 
 
-    useEffect(() => {
-        if (newTile === null) return;
+    
 
-        setTiles(prevTiles => {
-            const updatedTiles = new Set(prevTiles);
-            updatedTiles.add(newTile);
-            return updatedTiles;
-        });
-    }, [newTile]);
+
+    function HandleNewTile(tile) {
+
+    setTiles(prevTiles => {
+        const updatedTiles = new Set(prevTiles);
+        updatedTiles.add(tile);
+        return updatedTiles;
+    });
+}
 
 
     function RenderActiveToolWindow(){
@@ -32,22 +39,34 @@ function ToolWindowContainer({
             case 'Palette':
                 return <TilePalette activeTile={activeTile} setActiveTile={setActiveTile} tiles={tiles}/>
             case 'New Color':
-                return <NewColourPicker setNewTile={setNewTile}/>
+                return <NewColourPicker setNewTile={HandleNewTile}/>
             case 'New Tile':
                 return <div/>
             case 'Load':
-                return <SavedCanvas canvasMap={canvasMap}/>
+                return <SavedCanvas
+                            canvasMap={canvasMap} 
+                            setCanvasMap={setCanvasMap}
+                            selectedCanvasName={selectedCanvasName} 
+                            setSelectedCanvasName={setSelectedCanvasName}
+                            loadTrigger={loadTrigger}
+                            setLoadTrigger={setLoadTrigger}
+                        />
         }
     }
 
     return (
-        <div style={{
-            display: 'flex', 
-            flexDirection: 'column', 
-            width: '174px', 
-            backgroundColor: '#b35d99',
-            padding: '8px'
-        }}>
+        <div 
+            style={{
+                display: 'flex', 
+                flexDirection: 'column', 
+                width: '174px', 
+                minWidth: '174px',
+                padding: '8px'
+            }}
+            className='tool-window-container'
+        
+        
+        >
             {RenderActiveToolWindow()}
             
             

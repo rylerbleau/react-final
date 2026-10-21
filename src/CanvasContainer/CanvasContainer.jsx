@@ -1,37 +1,74 @@
-import React, { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect } from 'react'
+import { BIN_URL, BIN_RUD_KEY } from '../data/jsonBinConfig';
 
-function CanvasContainer({activeTile, curCanvas, curCanvasName, canvasMap, setCanvasMap}) {
+function CanvasContainer({activeTile, curCanvas, curCanvasName, canvasMap, selectedCanvasName, setCanvasMap, saveTrigger, loadTrigger}) {
     const GRID_SIZE = 32;
       
-    const TILE_TYPES = {
-        EMPTY: 'blue',
-        GRASS: 'green',
-        WATER: 'blue',
-
-    }
-  
-    const isMouseDown = useRef(false); // not a rendering var, so useRef
-    //const [activeTileID, setActiveTileID] = useState('grey')
-
-    useEffect(() =>{
-        if(curCanvasName === '') return;
-        console.log(curCanvasName);
-        //TODO
-        setCanvasMap(prev => {
-            const updated = new Map(prev);
-            
-            updated.set(curCanvasName, grid);   // overwrites if already exists
-            console.log(updated);
-            return updated;
-        });
-
-    }, [curCanvasName])
-
-
+    
     const [grid, setGrid] = useState(
         Array(GRID_SIZE * GRID_SIZE).fill('grey')
 
     );
+  
+    const isMouseDown = useRef(false); // not a rendering var, so useRef
+    //const [activeTileID, setActiveTileID] = useState('grey')
+
+
+    async function UpdateCanvasData(updatedCanvasMap) {
+
+        const payload = {
+            canvases: Object.fromEntries(updatedCanvasMap)
+        };
+
+
+        try {
+            const response = await fetch(BIN_URL, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Access-Key': BIN_RUD_KEY
+                },
+                body: JSON.stringify(payload)
+            });
+
+            const result = await response.json();
+
+
+            if (!response.ok) {
+                throw new Error(result.message);
+            }
+
+            console.log("Update suceeded");
+        } catch (error) {
+            console.error("Update failed: ", error);
+        }
+    }
+
+    useEffect(() =>{
+        if(curCanvasName === '') return;
+        if (saveTrigger === 0) return;
+
+        console.log(curCanvasName);
+        //TODO
+        
+        const updated = new Map(canvasMap);
+            
+        updated.set(curCanvasName, grid);   // overwrites if already exists
+        setCanvasMap(updated);
+        UpdateCanvasData(updated);
+
+    }, [curCanvasName, saveTrigger])
+
+
+   
+
+    useEffect(() =>{
+        if(selectedCanvasName === '') return;
+        if(loadTrigger === 0) return;
+
+        setGrid(canvasMap.get(selectedCanvasName));
+    }, [loadTrigger])
+    
 
 
     function UpdateTile(index){
@@ -88,6 +125,7 @@ function CanvasContainer({activeTile, curCanvas, curCanvasName, canvasMap, setCa
               
               return <div
                       key={index}
+                      className='tile'
                       onMouseDown={() => {
                           handleTileMouseDown(index);
                       }}
@@ -95,8 +133,6 @@ function CanvasContainer({activeTile, curCanvas, curCanvasName, canvasMap, setCa
                           handleTileMouseEnter(index);
                       }}
                       style={{
-                          width: '100%',
-                          height: '100%',
                           backgroundColor: tileKey, 
                           
                       }}

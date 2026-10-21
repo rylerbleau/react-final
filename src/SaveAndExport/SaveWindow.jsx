@@ -1,10 +1,10 @@
-import React, { useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 
-function SaveWindow({canvasMap, setCurCanvasName}) {
+function SaveWindow({canvasMap, setCurCanvasName, saveTrigger, setSaveTrigger}) {
     const [buttonText, setButtonText] = useState("Save (New)");
     const [buttonEnabled, setButtonEnabled] = useState(false);
     const curName = useRef('');
-    const nameInput = document.getElementById("nameInput");
+    const nameInput = useRef(null);
 
     function NameChangeHandler(text){
         curName.current = text;
@@ -24,17 +24,25 @@ function SaveWindow({canvasMap, setCurCanvasName}) {
 
 
     function SaveButtonHandler(){
-        console.log(curName.current);
+        console.log(curName.current); 
         setCurCanvasName(curName.current);
-        nameInput.value = ""
-        NameChangeHandler("")
-        //setCurCanvasName("")
+        nameInput.current.value = "";
+        NameChangeHandler("");
+        setSaveTrigger(prev => prev + 1);
+     
+
     }
 
     return (
         <div className="save-export-window">
-            <input type="text" id="nameInput" onChange={(e) => NameChangeHandler(e.target.value)} style={{height: '25px', fontSize: '20px'}}/>
-            <button disabled={!buttonEnabled} style={{width: '150px'}} onClick={() => SaveButtonHandler()}>
+            <input
+                ref={nameInput}
+                type="text"
+                id="nameInput"
+                onChange={(e) => NameChangeHandler(e.target.value)}
+                style={{ height: '25px', fontSize: '20px' }}
+            />
+            <button disabled={!buttonEnabled} style={{width: '150px'}} onClick={SaveButtonHandler}>
                 {buttonText}
             </button>
         </div>

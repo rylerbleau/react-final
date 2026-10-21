@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
-import ToolbarItem from '../ToolbarItem/ToolbarItem'
+//import React, { useState } from 'react'
+import ThemeToggle from '../ToolbarItems/ThemeToggle';
+import ToolbarItem from '../ToolbarItems/ToolbarItem'
 
 function Toolbar({paletteVisible, setPaletteVisible}) {
 
@@ -17,7 +18,7 @@ function Toolbar({paletteVisible, setPaletteVisible}) {
                 <ToolbarItem name='Option 2'></ToolbarItem>
                 <ToolbarItem name='Option 3'></ToolbarItem>
                 <ToolbarItem name='Option 4'></ToolbarItem>
-
+                <ThemeToggle />
 
             </div>
         

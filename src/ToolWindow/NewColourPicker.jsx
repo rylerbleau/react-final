@@ -1,4 +1,4 @@
-import React, {useState, Fragment} from 'react'
+import {useState} from 'react'
 import Wheel from '@uiw/react-color-wheel';
 import { hsvaToHex } from '@uiw/color-convert';
 
